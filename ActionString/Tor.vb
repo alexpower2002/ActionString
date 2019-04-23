@@ -34,8 +34,6 @@ Public Class Tor
         lines(0) = "ControlPort " & 1339
         lines(1) = "DataDirectory " & Path.Combine(Directory.GetCurrentDirectory, "TorExtracted\tor-win32-0.3.2.10\Data\Tor")
         lines(3) = "SocksPort " & 1338
-        lines(4) = ""
-        lines(5) = ""
 
         File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory, "TorExtracted\tor-win32-0.3.2.10\Data\Tor\torrc"), lines)
 
