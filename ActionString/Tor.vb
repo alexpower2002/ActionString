@@ -13,12 +13,12 @@ Public Class Tor
 
     Public Shared Addresses As New List(Of String)
 
-    Sub New()
+    Sub New(Country As String)
         Dim success = False
 
         Do Until success
             Try
-                TryNew()
+                TryNew(Country)
 
                 success = True
             Catch ex As Exception
@@ -27,17 +27,8 @@ Public Class Tor
         Loop
     End Sub
 
-    Private Sub TryNew()
-        Dim text = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory, "TorExtracted\privoxy-3.0.26\config.txt"))
-        Dim lines = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory, "TorExtracted\tor-win32-0.3.2.10\Data\Tor\torrc"))
-
-        lines(0) = "ControlPort " & 1339
-        lines(1) = "DataDirectory " & Path.Combine(Directory.GetCurrentDirectory, "TorExtracted\tor-win32-0.3.2.10\Data\Tor")
-        lines(3) = "SocksPort " & 1338
-
-        File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory, "TorExtracted\tor-win32-0.3.2.10\Data\Tor\torrc"), lines)
-
-        settings = New TorSharpSettings With {.ZippedToolsDirectory = Path.Combine(Directory.GetCurrentDirectory, "TorZipped"), .ExtractedToolsDirectory = Path.Combine(Directory.GetCurrentDirectory, "TorExtracted"), .PrivoxyPort = 1337, .TorSocksPort = 1338, .TorControlPort = 1339, .TorControlPassword = "foobar", .TorExitNodes = "{de}", .TorStrictNodes = True}
+    Private Sub TryNew(Country As String)
+        settings = New TorSharpSettings With {.ZippedToolsDirectory = Path.Combine(Directory.GetCurrentDirectory, "TorZipped"), .ExtractedToolsDirectory = Path.Combine(Directory.GetCurrentDirectory, "TorExtracted"), .PrivoxyPort = 1337, .TorSocksPort = 1338, .TorControlPort = 1339, .TorControlPassword = "foobar", .TorExitNodes = "{" & Country & "}", .TorStrictNodes = True}
         proxy = New TorSharpProxy(settings)
 
         Dim handler = New HttpClientHandler With {.Proxy = New WebProxy(New Uri("http://localhost:" & settings.PrivoxyPort))}

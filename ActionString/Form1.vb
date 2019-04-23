@@ -7,10 +7,11 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Panel1.Visible = False
         Panel2.Visible = False
+        Panel3.Visible = False
 
         Dim s As New CefSettings
 
-        xTor = New Tor
+        xTor = New Tor("de")
         s.CefCommandLineArgs.Add("proxy-server", "socks5://127.0.0.1:1338")
         CefSharp.Cef.Initialize(s)
         cef = New ChromiumWebBrowser("https://google.com")
