@@ -13,6 +13,7 @@ Public Class Form1
 
         xTor = New Tor("de")
         s.CefCommandLineArgs.Add("proxy-server", "socks5://127.0.0.1:1338")
+        s.UserAgent = ""
         CefSharp.Cef.Initialize(s)
         cef = New ChromiumWebBrowser("https://google.com")
         Controls.Add(cef)
@@ -29,5 +30,21 @@ Public Class Form1
         Loop
 
         Dim rnd As New Random(TimeOfDay.Ticks / 10000)
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        CefSharp.Cef.GetGlobalCookieManager.VisitAllCookies(New CookieVisitor)
+
+        For Each c In CookieVisitor.Cookies
+
+        Next
+
+        CookieVisitor.Cookies.Clear()
+    End Sub
+
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If CefSharp.Cef.IsInitialized Then
+            CefSharp.Cef.Shutdown()
+        End If
     End Sub
 End Class
